@@ -1,4 +1,4 @@
-from problems import problem_003_part_2
+from problems.day_03 import day_03_part_2
 from utils import read_lines_from_comment, read_lines_from_file
 
 
@@ -20,12 +20,12 @@ def test_problem_003_part_2_example():
 
     input = read_lines_from_comment(example)
 
-    result = problem_003_part_2.solve(input)
+    result = day_03_part_2.solve(input)
     assert 230 == result
 
 
 def test_problem_003_part_2_problem():
-    input = read_lines_from_file(".\\data\\problem_003_part_2_input.txt")
-    result = problem_003_part_2.solve(input)
+    input = read_lines_from_file(".\\data\\day_03\\day_03_input.txt")
+    result = day_03_part_2.solve(input)
 
     assert 4406844 == result

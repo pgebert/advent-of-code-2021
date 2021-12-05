@@ -1,8 +1,8 @@
-from problems import problem_001
+from problems.day_01 import day_01_part_1
 from utils import read_lines_from_comment, read_lines_from_file
 
 
-def test_problem_001_example():
+def test_day_01_part_1_example():
     example = """
         199
         200
@@ -17,13 +17,13 @@ def test_problem_001_example():
     """
 
     input = read_lines_from_comment(example)
-    result = problem_001.solve(input)
+    result = day_01_part_1.solve(input)
 
     assert 7 == result
 
 
-def test_problem_001_problem():
-    input = read_lines_from_file(".\\data\\problem_001_part_1_input.txt")
-    result = problem_001.solve(input)
+def test_day_01_part_1_problem():
+    input = read_lines_from_file(".\\data\\day_01\\day_01_input.txt")
+    result = day_01_part_1.solve(input)
 
     assert 1532 == result

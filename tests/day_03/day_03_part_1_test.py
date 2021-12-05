@@ -1,4 +1,4 @@
-from problems import problem_003_part_1
+from problems.day_03 import day_03_part_1
 from utils import read_lines_from_comment, read_lines_from_file
 
 
@@ -19,14 +19,13 @@ def test_problem_003_part_1_example():
     """
 
     input = read_lines_from_comment(example)
-    result = problem_003_part_1.solve(input)
+    result = day_03_part_1.solve(input)
 
     assert 198 == result
 
 
 def test_problem_003_part_1_problem():
-    input = read_lines_from_file(".\\data\\problem_003_part_1_input.txt")
-    result = problem_003_part_1.solve(input)
+    input = read_lines_from_file(".\\data\\day_03\\day_03_input.txt")
+    result = day_03_part_1.solve(input)
 
     assert 3687446 == result
-
