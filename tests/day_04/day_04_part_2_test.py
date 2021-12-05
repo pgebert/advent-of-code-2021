@@ -1,8 +1,8 @@
-from problems.day_04 import day_04_part_1
+from problems.day_04 import day_04_part_2
 from utils import read_lines_from_comment, read_lines_from_file
 
 
-def test_day_04_part_1_example():
+def test_day_04_part_2_example():
     example = """
         7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
         
@@ -26,13 +26,13 @@ def test_day_04_part_1_example():
     """
 
     input = read_lines_from_comment(example)
-    result = day_04_part_1.solve(input)
+    result = day_04_part_2.solve(input)
 
-    assert 4512 == result
+    assert 1924 == result
 
 
-def test_day_04_part_1_problem():
+def test_day_04_part_2_problem():
     input = read_lines_from_file(".\\data\\day_04\\day_04_input.txt")
-    result = day_04_part_1.solve(input)
+    result = day_04_part_2.solve(input)
 
-    assert 10374 == result
+    assert 24742 == result
