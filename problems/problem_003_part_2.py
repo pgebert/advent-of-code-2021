@@ -2,7 +2,7 @@ from typing import List
 
 """
 
-https://adventofcode.com/2021/day/2
+https://adventofcode.com/2021/day/3
 
 --- Part Two ---
 Next, you should verify the life support rating, which can be determined by multiplying the oxygen generator rating by the CO2 scrubber rating.
@@ -35,34 +35,34 @@ Finally, to find the life support rating, multiply the oxygen generator rating (
 Use the binary numbers in your diagnostic report to calculate the oxygen generator rating and CO2 scrubber rating, then multiply them together. What is the life support rating of the submarine? (Be sure to represent your answer in decimal, not binary.)
 """
 
+
 def most_common(lst):
     cnt_one = len([bit for bit in lst if bit == "1"])
     cnt_zero = len([bit for bit in lst if bit == "0"])
     return "0" if cnt_zero > cnt_one else "1"
+
 
 def least_common(lst):
     cnt_one = len([bit for bit in lst if bit == "1"])
     cnt_zero = len([bit for bit in lst if bit == "0"])
     return "0" if cnt_zero <= cnt_one else "1"
 
-def filter_by_first_bits(input, evaluate_first_bits):
 
+def filter_by_first_bits(input, evaluate_first_bits):
     candidates = list(input)
     len_bits = len(input[0])
     i = 0
 
     while len(candidates) > 1 and i < len_bits:
-
         first_bits = [candidate[i] for candidate in candidates]
         bit = evaluate_first_bits(first_bits)
         candidates = [candidate for candidate in candidates if candidate[i] == bit]
-        i+= 1
+        i += 1
 
     return next((candidate for candidate in candidates))
 
 
 def solve(input: List[str]):
-
     oxygen_generator_rating_binary = filter_by_first_bits(input, most_common)
     co2_scrubber_rating_binary = filter_by_first_bits(input, least_common)
 

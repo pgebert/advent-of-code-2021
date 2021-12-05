@@ -2,7 +2,7 @@ from typing import List
 
 """
 
-https://adventofcode.com/2021/day/2
+https://adventofcode.com/2021/day/3
 
 --- Day 3: Binary Diagnostic ---
 The submarine has been making some odd creaking noises, so you ask it to produce a diagnostic report just in case.
@@ -39,24 +39,26 @@ Use the binary numbers in your diagnostic report to calculate the gamma rate and
 
 """
 
+
 def most_common(lst):
     return max(set(lst), key=lst.count)
+
 
 def least_common(lst):
     return min(set(lst), key=lst.count)
 
-def solve(input: List[str]):
 
+def solve(input: List[str]):
     len_bits = len(input[0])
 
-    bits = { i: [] for i in range(len_bits)}
+    bits = {i: [] for i in range(len_bits)}
 
     for line in input:
         for i in range(len_bits):
             bits[i].append(line[i])
 
-    gamma_binary = "".join([ most_common(bits[i]) for i in bits.keys()])
-    epsilon_binary = "".join([ least_common(bits[i]) for i in bits.keys()])
+    gamma_binary = "".join([most_common(bits[i]) for i in bits.keys()])
+    epsilon_binary = "".join([least_common(bits[i]) for i in bits.keys()])
 
     gamma = int(gamma_binary, 2)
     epsilon = int(epsilon_binary, 2)
