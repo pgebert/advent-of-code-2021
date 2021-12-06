@@ -2,7 +2,7 @@ from problems.day_05 import day_05_part_2
 from utils import read_lines_from_comment, read_lines_from_file
 
 
-def test_day_04_part_2_example():
+def test_day_05_part_2_example():
     example = """
         0,9 -> 5,9
         8,0 -> 0,8
@@ -22,7 +22,7 @@ def test_day_04_part_2_example():
     assert 12 == result
 
 
-def test_day_04_part_2_problem():
+def test_day_05_part_2_problem():
     input = read_lines_from_file(".\\data\\day_05\\day_05_input.txt")
     result = day_05_part_2.solve(input)
 
