@@ -1,5 +1,5 @@
 # Advent of Code 2021
-[Advent of Code](https://adventofcode.com/2021) 2021 solutions written in Python.
+[Advent of Code 2021](https://adventofcode.com/2021) solutions written in Python. 🚀
 
 ## Structure
 
