@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from .Sea import Sea
+from .sea import Sea
 
 """
 

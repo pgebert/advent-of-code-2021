@@ -1,6 +1,6 @@
 from typing import List
 
-from .SeaFloor import SeaFloor, Point
+from .seaFloor import SeaFloor, Point
 
 """
 

@@ -1,6 +1,6 @@
 from typing import List
 
-from .Octopus import Octopus
+from .octopus import Octopus
 
 
 class Sea:
