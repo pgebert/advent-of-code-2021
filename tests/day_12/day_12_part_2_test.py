@@ -19,7 +19,7 @@ def test_day_11_part_2_example_small():
     assert 36 == result
 
 
-def test_day_11_part_2_example_medium():
+def test_day_12_part_2_example_medium():
     example = """
         dc-end
         HN-start
@@ -39,7 +39,7 @@ def test_day_11_part_2_example_medium():
     assert 103 == result
 
 
-def test_day_11_part_2_problem():
+def test_day_12_part_2_problem():
     input = read_lines_from_file(".\\data\\day_12\\day_12_input.txt")
     result = day_12_part_2.solve(input)
 
