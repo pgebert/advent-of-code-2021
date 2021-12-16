@@ -1,4 +1,12 @@
+from __future__ import annotations
+
+import enum
+import sys
+from dataclasses import dataclass, field
+from math import log2, prod
 from typing import List
+
+sys.setrecursionlimit(1500)
 
 """
 
@@ -91,6 +99,167 @@ Decode the structure of your hexadecimal-encoded BITS transmission; what do you 
 """
 
 
-def solve(input: List[str]):
+def hex2binary(hex: str) -> str:
+    scale = 16  ## equals to hexadecimal
+    num_of_bits = len(hex) * int(log2(scale))
+    return bin(int(hex, scale))[2:].zfill(num_of_bits)
 
 
+def binary2decimal(binary: str) -> int:
+    return int(binary, 2)
+
+
+class PackageType(enum.Enum):
+    SUM = 0
+    PRODUCT = 1
+    MINIMUM = 2
+    MAXIMUM = 3
+    LITERAL = 4
+    GREATER_THAN = 5
+    LESS_THAN = 6
+    EQUAL_TO = 7
+
+
+@dataclass
+class Package:
+    version: int
+    type: PackageType
+    value: int = None
+    number_of_contained_bits: int = 0
+    number_of_expected_children: int = 0
+    number_of_expected_bits: int = 0
+
+    parent: Package = None
+    children: List[Package] = field(default_factory=list)
+
+    def is_literal(self) -> bool:
+        return self.type == PackageType.LITERAL
+
+    def is_operator(self) -> bool:
+        return self.type != PackageType.LITERAL
+
+    def is_root(self) -> bool:
+        return self.parent is None
+
+    def get_number_of_contained_bits(self) -> int:
+        return self.number_of_contained_bits or sum((child.get_number_of_contained_bits for child in self.children))
+
+    def get_number_of_contained_children(self) -> int:
+        return len(self.children)
+
+    def get_value(self) -> int:
+        value = 0
+
+        if self.type == PackageType.SUM:
+            value = sum((child.get_value() for child in self.children))
+        elif self.type == PackageType.PRODUCT:
+            value = prod((child.get_value() for child in self.children))
+        elif self.type == PackageType.MINIMUM:
+            value = min((child.get_value() for child in self.children))
+        elif self.type == PackageType.MAXIMUM:
+            value = max((child.get_value() for child in self.children))
+        elif self.type == PackageType.LITERAL:
+            value = self.value
+        elif self.type == PackageType.GREATER_THAN:
+            value = 1 if self.children[0].get_value() > self.children[1].get_value() else 0
+        elif self.type == PackageType.LESS_THAN:
+            value = 1 if self.children[0].get_value() < self.children[1].get_value() else 0
+        elif self.type == PackageType.EQUAL_TO:
+            value = 1 if self.children[0].get_value() == self.children[1].get_value() else 0
+
+        return value
+
+
+class Parser:
+
+    def __init__(self, hex: str):
+        self.binary = hex2binary(hex)
+        self.root_package = None
+
+    def parse(self):
+
+        stack = self.binary
+        package_pointer = None
+
+        while binary2decimal(stack) != 0:
+
+            version = binary2decimal(stack[0:3])
+            type = PackageType(binary2decimal(stack[3:6]))
+
+            package = Package(version=version, type=type)
+
+            if package.is_operator():
+
+                # Get length type
+                length_type = int(stack[6])
+                if length_type == 1:
+                    # TODO Use number packages
+                    package.number_of_expected_children = binary2decimal(stack[7:18])
+                    stack = stack[18:]
+
+                else:
+                    # TODO Use number packages
+                    package.number_of_expected_bits = binary2decimal(stack[7:22])
+                    stack = stack[22:]
+            else:
+                # TODO Implement this
+
+                i = 0
+                while int(stack[6 + i]) != 0:
+                    i += 1
+                package.number_of_contained_bits = 6 + (i + 1) * 5
+                package.value = binary2decimal(stack[6: 6 + (i + 1) * 5])
+                stack = stack[6 + (i + 1) * 5:]
+
+            while (package_pointer is not None
+                   and package_pointer.number_of_expected_children == package_pointer.get_number_of_contained_children()
+                   and package_pointer.number_of_expected_bits == package_pointer.get_number_of_contained_bits()):
+                package_pointer = package_pointer.parent
+
+            if package_pointer is None:
+                self.root_package = package
+                package_pointer = package
+            else:
+                package_pointer.children.append(package)
+                package.parent = package_pointer
+                package_pointer = package
+            # elif package_pointer.number_of_expected_children > 0:
+            #     package_pointer.children.append()
+            #
+            # package_pointer = package
+
+        print(self.root_package)
+
+    # def get_versions(self) -> List[int]:
+    #     return [package.version for package in self.packages]
+
+    # def parse_package_recursively(self, package):
+
+    def get_versions(self) -> List[int]:
+
+        versions = []
+
+        if self.root_package is not None:
+            versions.extend(self._get_versions_recursively(self.root_package))
+
+        return versions
+
+    def _get_versions_recursively(self, package: Package) -> List[int]:
+
+        versions = [package.version]
+        for child in package.children:
+            versions.extend(self._get_versions_recursively(child))
+        return versions
+
+
+def solve(input: str):
+    parser = Parser('9C0141080250320F1802104A08')
+    parser.parse()
+    print(parser.root_package.get_value())
+
+    # parser = Parser(input)
+    # print(parser.binary)
+    # parser.parse()
+    # return sum(parser.get_versions())
+
+# 100 010 1 00000000001 | 001 010 1 00000000001 | 101 010 0 000000000001011 110 100 01111 000
