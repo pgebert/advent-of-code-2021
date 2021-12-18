@@ -1,46 +1,47 @@
-from copy import deepcopy
-from typing import List
+from __future__ import annotations
 
-from .cave import Cave
+import sys
 
-"""
+from .parser import Parser
 
-https://adventofcode.com/2021/day/15
-
+sys.setrecursionlimit(1500)
 
 """
 
+https://adventofcode.com/2021/day/16
 
-def print_matrix(input):
-    print()
-    for line in input:
-        print("".join(map(str, line)))
+--- Part Two ---
+Now that you have the structure of your transmission decoded, you can calculate the value of the expression it represents.
+
+Literal values (type ID 4) represent a single number as described above. The remaining type IDs are more interesting:
+
+Packets with type ID 0 are sum packets - their value is the sum of the values of their sub-packets. If they only have a single sub-packet, their value is the value of the sub-packet.
+Packets with type ID 1 are product packets - their value is the result of multiplying together the values of their sub-packets. If they only have a single sub-packet, their value is the value of the sub-packet.
+Packets with type ID 2 are minimum packets - their value is the minimum of the values of their sub-packets.
+Packets with type ID 3 are maximum packets - their value is the maximum of the values of their sub-packets.
+Packets with type ID 5 are greater than packets - their value is 1 if the value of the first sub-packet is greater than the value of the second sub-packet; otherwise, their value is 0. These packets always have exactly two sub-packets.
+Packets with type ID 6 are less than packets - their value is 1 if the value of the first sub-packet is less than the value of the second sub-packet; otherwise, their value is 0. These packets always have exactly two sub-packets.
+Packets with type ID 7 are equal to packets - their value is 1 if the value of the first sub-packet is equal to the value of the second sub-packet; otherwise, their value is 0. These packets always have exactly two sub-packets.
+Using these rules, you can now work out the value of the outermost packet in your BITS transmission.
+
+For example:
+
+C200B40A82 finds the sum of 1 and 2, resulting in the value 3.
+04005AC33890 finds the product of 6 and 9, resulting in the value 54.
+880086C3E88112 finds the minimum of 7, 8, and 9, resulting in the value 7.
+CE00C43D881120 finds the maximum of 7, 8, and 9, resulting in the value 9.
+D8005AC2A8F0 produces 1, because 5 is less than 15.
+F600BC2D8F produces 0, because 5 is not greater than 15.
+9C005AC2F8F0 produces 0, because 5 is not equal to 15.
+9C0141080250320F1802104A08 produces 1, because 1 + 3 = 2 * 2.
+What do you get if you evaluate the expression represented by your hexadecimal-encoded BITS transmission?
 
 
-def increase_matrix_values(matrix, offset=1):
-    matrix = deepcopy(matrix)
-
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            matrix[i][j] = matrix[i][j] + offset if matrix[i][j] + offset <= 9 else (matrix[i][j] + offset) % 9
-    return matrix
+"""
 
 
-def extend_matrix(matrix, factor):
-    first_col = []
-    for i in range(factor):
-        for line in increase_matrix_values(matrix, i):
-            first_col.append(line)
-    new_matrix = deepcopy(first_col)
-    for i in range(1, factor):
-        for j, line in enumerate(increase_matrix_values(first_col, i)):
-            new_matrix[j] += line
-    return new_matrix
-
-
-def solve(input: List[str]):
-    input = [[int(s) for s in line] for line in input]
-    input = extend_matrix(input, 5)
-
-    cave = Cave(input)
-    return cave.cost_to_destionation(iterations=10)
+def solve(input: str):
+    parser = Parser(input)
+    parser.parse()
+    # parser.root_package.print()
+    return parser.root_package.get_value()
