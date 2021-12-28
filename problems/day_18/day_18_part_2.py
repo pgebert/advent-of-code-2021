@@ -2,7 +2,7 @@ from typing import List
 
 """
 
-https://adventofcode.com/2021/day/18
+https://adventofcode.com/2021/day/20
 
 
 """
