@@ -19,6 +19,7 @@ advent-of-code-2021
 │   ├── day02         
 │   └── ...  
 ├── utils              # Utility methods to read in files and examples
+├── setup.py           # Package information
 └── README.md
 ```
 
