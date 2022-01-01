@@ -1,5 +1,7 @@
 from typing import List
 
+from .monad import monad
+
 """
 
 https://adventofcode.com/2021/day/24
@@ -65,51 +67,5 @@ To enable as many submarine features as possible, find the largest valid fourtee
 """
 
 
-def monad(program: List[str]):
-    for model_number in range(99999999999999, 11111111111110, -1):
-
-        if "0" in str(model_number):
-            continue
-
-        model_number = list(map(int, list(str(model_number))))
-
-        variables = solve(program, list(model_number))
-        print("".join(map(str, model_number)))
-        print(variables)
-        model_number = int("".join(map(str, model_number)))
-        if variables.get("z") == 0:
-            return model_number
-
-    # TODO run solve on single digits and return variables
-    # TODO use varaibles as input
-    # TODO memorize solver
-
-    return 0
-
-
-def solve(program: List[str], input):
-    variables = {"w": 0, "x": 0, "y": 0, "z": 0}
-
-    for line in program:
-
-        splitted = line.split(" ")
-        command = splitted[0]
-        arguments = splitted[1:]
-
-        if len(arguments) > 1:
-            arguments[1] = int(arguments[1]) if arguments[1].lstrip("-").isdigit() else variables[arguments[1]]
-
-        if command == "inp":
-            variables[arguments[0]] = input.pop(0)
-        elif command == "add":
-            variables[arguments[0]] += arguments[1]
-        elif command == "div":
-            variables[arguments[0]] //= arguments[1]
-        elif command == "mod":
-            variables[arguments[0]] %= arguments[1]
-        elif command == "eql":
-            variables[arguments[0]] = 1 if variables[arguments[0]] == arguments[1] else 0
-        elif command == "mul":
-            variables[arguments[0]] *= arguments[1]
-
-    return variables
+def solve(program: List[str]):
+    return monad(program)
