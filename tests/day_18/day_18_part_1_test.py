@@ -26,4 +26,4 @@ def test_day_18_part_1_problem():
     input = read_lines_from_file(".\\data\\day_18\\day_18_input.txt")
     result = day_18_part_1.solve(input)
 
-    assert 4005 == result
+    assert 3691 == result
