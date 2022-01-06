@@ -30,7 +30,7 @@ def test_day_13_part_2_example_medium():
     input = read_lines_from_comment(example)
     result = day_13_part_2.solve(input)
 
-    assert 103 == result
+    assert 16 == result
 
 
 def test_day_13_part_2_problem():
